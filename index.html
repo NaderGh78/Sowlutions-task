@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Example</title>
+  <style>
+    .highlight {
+      background-color: yellow;
+    }
+
+    .article {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="text" id="searchInput" placeholder="Search..." oninput="searchHandler()">
+  <div id="search-result"></div>
+
+  <!-- //////////////////////////////// -->
+
+  <script>
+    // saved dummy data in articlesArr
+    const articlesArr = [
+      'is simply dummy text of the printing and typesetting industry.',
+      'There are many variations of passages of Lorem Ipsum available',
+      'Contrary to popular belief, Lorem Ipsum is not simply random text',
+      ' It was popularised in the 1960s with the release of Letraset sheets containing Lorem',
+    ];
+
+    function searchHandler() {
+
+      //  Initialize variables
+      const searchInput = document.getElementById('searchInput').value;
+
+      const searchTerm = searchInput.trim().toLowerCase();
+
+      const searchResult = document.getElementById('search-result');
+
+      /*========================================*/
+
+      // if user dont fill the input ,won't be result shown,stop execution the function
+      if (searchTerm === '') {
+
+        searchResult.innerHTML = '';
+
+        return;
+
+      }
+
+      /*========================================*/
+
+      // highlight string func
+      const highlightedString = articlesArr.map(article => {
+
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+
+        //  return the article with matched text highlighted using regex
+        return article.replace(regex, '<span class="highlight">$1</span>');
+
+      });
+
+      /*========================================*/
+
+      // filter articles array to include only those containing the search term
+      const filteredArticlesArr = highlightedString.filter(article => article.toLowerCase().includes(searchTerm));
+
+      console.log(filteredArticlesArr)
+
+      // display search results if there are items in filteredArticlesArr, otherwise show "No matches found."
+      if (filteredArticlesArr.length === 0) {
+
+        searchResult.innerHTML = '<p>No matches found.</p>';
+
+      } else {
+
+        searchResult.innerHTML = filteredArticlesArr.map(article => `<div class="article">${article}</div>`).join('');
+
+      }
+    }  
+  </script>
+</body>
+
+</html>
